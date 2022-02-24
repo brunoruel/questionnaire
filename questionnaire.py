@@ -18,6 +18,12 @@
 #
 #    - lancer()
 #
+import json
+from os import path
+
+from matplotlib.font_manager import json_load
+
+
 
 class Question:
     def __init__(self, titre, choix, bonne_reponse):
@@ -73,6 +79,43 @@ class Questionnaire:
         return score
 
 
+if path.exists("animaux_leschats_confirme.json"):
+    f = open("animaux_leschats_confirme.json", "r")
+    question_en_dure_json = f.read()
+    f.close
+    question_en_dure = json.loads(question_en_dure_json)
+
+question_titre = question_en_dure["titre"]
+question_categorie = question_en_dure["categorie"]
+
+questionnaire = []
+
+for question in question_en_dure["questions"]:
+    titre = question["titre"]
+    choix = []
+    bonne_reponse = ""
+    for choix_rep in question["choix"]:
+        choix.append(choix_rep[0])
+        if choix_rep[1] == True:
+            bonne_reponse = choix_rep[0]
+    questionnaire.append(Question(titre, choix, bonne_reponse))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 """questionnaire = (
     ("Quelle est la capitale de la France ?", ("Marseille", "Nice", "Paris", "Nantes", "Lille"), "Paris"), 
     ("Quelle est la capitale de l'Italie ?", ("Rome", "Venise", "Pise", "Florence"), "Rome"),
@@ -88,12 +131,12 @@ lancer_questionnaire(questionnaire)"""
 # q = Question.FromData(data)
 # print(q.__dict__)
 
-Questionnaire(
-    (
-    Question("Quelle est la capitale de la France ?", ("Marseille", "Nice", "Paris", "Nantes", "Lille"), "Paris"), 
-    Question("Quelle est la capitale de l'Italie ?", ("Rome", "Venise", "Pise", "Florence"), "Rome"),
-    Question("Quelle est la capitale de la Belgique ?", ("Anvers", "Bruxelles", "Bruges", "Liège"), "Bruxelles")
-    )
-).lancer()
+# Questionnaire(
+#     (
+#     Question("Quelle est la capitale de la France ?", ("Marseille", "Nice", "Paris", "Nantes", "Lille"), "Paris"), 
+#     Question("Quelle est la capitale de l'Italie ?", ("Rome", "Venise", "Pise", "Florence"), "Rome"),
+#     Question("Quelle est la capitale de la Belgique ?", ("Anvers", "Bruxelles", "Bruges", "Liège"), "Bruxelles")
+#     )
+# ).lancer()
 
 
